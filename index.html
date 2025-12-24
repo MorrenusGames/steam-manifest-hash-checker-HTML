@@ -888,7 +888,7 @@
                 });
             },
             getRelativePath(file) {
-                let relativePath = file.webkitRelativePath;
+                let relativePath = file.relativePath;
                 if (!relativePath) {
                     return file.name;
                 }
@@ -1359,7 +1359,7 @@
                                 return new Promise((resolve) => {
                                     entry.file(file => {
                                         const pathParts = entry.fullPath.split('/');
-                                        file.webkitRelativePath = pathParts.slice(2).join('/') || file.name;
+                                        file.relativePath = ("/" + pathParts.slice(2).join('/')) 
                                         files.push(file);
                                         resolve();
                                     }, (err) => {
