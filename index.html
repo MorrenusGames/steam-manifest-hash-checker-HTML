@@ -1355,25 +1355,40 @@
                         const items = e.dataTransfer.items;
                         const files = [];
                         async function getAllFiles(entry) {
-                            return new Promise((resolve) => {
-                                if (entry.isFile) {
+                            if (entry.isFile) {
+                                return new Promise((resolve) => {
                                     entry.file(file => {
                                         const pathParts = entry.fullPath.split('/');
                                         file.webkitRelativePath = pathParts.slice(2).join('/') || file.name;
                                         files.push(file);
                                         resolve();
-                                    });
-                                } else if (entry.isDirectory) {
-                                    const reader = entry.createReader();
-                                    reader.readEntries(async (entries) => {
-                                        const promises = entries.map(entry => getAllFiles(entry));
-                                        await Promise.all(promises);
+                                    }, (err) => {
+                                        console.warn(`Failed to read file: ${entry.fullPath}`, err);
                                         resolve();
                                     });
-                                } else {
-                                    resolve();
+                                });
+                            } 
+                            else if (entry.isDirectory) {
+                                const reader = entry.createReader();
+                                const entries = [];
+                                
+                                const readBatch = () => new Promise((resolve, reject) => {
+                                    reader.readEntries(resolve, reject);
+                                });
+
+                                try {
+                                    let batch;
+                                    do {
+                                        batch = await readBatch();
+                                        entries.push(...batch);
+                                    } while (batch.length > 0);
+                                    
+                                    const promises = entries.map(entry => getAllFiles(entry));
+                                    await Promise.all(promises);
+                                } catch (err) {
+                                    console.warn(`Error reading directory: ${entry.fullPath}`, err);
                                 }
-                            });
+                            }
                         }
                         const promises = [];
                         for (const item of items) {
