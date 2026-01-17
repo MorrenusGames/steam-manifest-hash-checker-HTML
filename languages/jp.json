@@ -2,14 +2,14 @@
     "app": {
         "title": "Steam Manifest/SHA-1チェッカー",
         "themes": {
-            "dark": "Dark Theme",
-            "blue": "Blue Theme",
-            "light": "Light Theme",
-            "steam": "Steam Theme",
-            "synthwave": "Synthwave Theme",
-            "ocean": "Ocean Theme",
-            "forest": "Forest Theme",
-            "solarized": "Solarized Theme"
+            "dark": "ダークテーマ",
+            "blue": "ブルーテーマ",
+            "light": "ライトテーマ",
+            "steam": "Steamテーマ",
+            "synthwave": "シンセウェーブテーマ",
+            "ocean": "オーシャンテーマ",
+            "forest": "フォレストテーマ",
+            "solarized": "ソラライズドテーマ"
         },
         "folderToggle": {
             "hide": "フォルダを隠す",
@@ -25,10 +25,8 @@
     "fileInfo": {
         "title": "ファイル情報",
         "type": "タイプ",
-        "//comment":"デポID",
-        "depotId": "Depot ID",
-        "//comment":"マニフェストID",
-        "manifestId": "Manifest ID",
+        "depotId": "デポID",
+        "manifestId": "マニフェストID",
         "creationDate": "作成年月日",
         "totalFiles": "合計ファイル数",
         "status": "ステータス",
@@ -59,13 +57,13 @@
     "status": {
         "match": "一致",
         "mismatch": "不一致",
-        "pending": "申請中",
+        "pending": "保留中",
         "folder": "フォルダ",
-        "notStarted": "未スタート"
+        "notStarted": "未開始"
     },
     "progress": {
         "matched": "一致",
-        "speed": "スピード",
+        "speed": "速度",
         "mbps": "MB/s"
     },
     "errors": {
@@ -78,11 +76,11 @@
         "processingError": "ファイルの処理中にエラーが発生しました："
     },
     "ui": {
-        "loading": "ローディング...",
-        "processing": "しょり...",
+        "loading": "読み込み中...",
+        "processing": "処理中...",
         "folder": "フォルダ",
-        "close": "クローズ",
+        "close": "閉じる",
         "cancel": "キャンセル",
-        "confirm": "コンファーム"
+        "confirm": "確認"
     }
 }

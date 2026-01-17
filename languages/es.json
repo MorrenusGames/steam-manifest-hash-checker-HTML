@@ -1,86 +1,86 @@
 {
     "app": {
-        "title": "Steam Manifest/SHA1 Checker",
+        "title": "Verificador de Manifiestos Steam/SHA1",
         "themes": {
-            "dark": "Dark Theme",
-            "blue": "Blue Theme",
-            "light": "Light Theme",
-            "steam": "Steam Theme",
-            "synthwave": "Synthwave Theme",
-            "ocean": "Ocean Theme",
-            "forest": "Forest Theme",
-            "solarized": "Solarized Theme"
+            "dark": "Tema Oscuro",
+            "blue": "Tema Azul",
+            "light": "Tema Claro",
+            "steam": "Tema Steam",
+            "synthwave": "Tema Synthwave",
+            "ocean": "Tema Océano",
+            "forest": "Tema Bosque",
+            "solarized": "Tema Solarizado"
         },
         "folderToggle": {
-            "hide": "Hide Folders",
-            "show": "Show Folders"
+            "hide": "Ocultar Carpetas",
+            "show": "Mostrar Carpetas"
         }
     },
     "dropzones": {
-        "manifest": "Drop Steam manifest or SHA1 file here",
-        "orInput": "Or enter SHA1 hashes into the textarea below",
-        "textareaPlaceholder": "SHA1 hashes here",
-        "folder": "Drop folder to verify here"
+        "manifest": "Arrastra el manifiesto de Steam o archivo SHA1 aquí",
+        "orInput": "O ingresa los hashes SHA1 en el área de texto a continuación",
+        "textareaPlaceholder": "Hashes SHA1 aquí",
+        "folder": "Arrastra la carpeta a verificar aquí"
     },
     "fileInfo": {
-        "title": "File Info",
-        "type": "Type",
-        "depotId": "Depot ID",
-        "manifestId": "Manifest ID",
-        "creationDate": "Creation Date",
-        "totalFiles": "Total Files",
-        "status": "Status",
-        "totalSize": "Total Size",
+        "title": "Información del Archivo",
+        "type": "Tipo",
+        "depotId": "ID de Depósito",
+        "manifestId": "ID de Manifiesto",
+        "creationDate": "Fecha de Creación",
+        "totalFiles": "Total de Archivos",
+        "status": "Estado",
+        "totalSize": "Tamaño Total",
         "types": {
-            "steam": "Steam Manifest",
-            "sha1": "SHA1 File"
+            "steam": "Manifiesto Steam",
+            "sha1": "Archivo SHA1"
         }
     },
     "mismatches": {
-        "title": "Mismatched Files",
+        "title": "Archivos No Coincidentes",
         "columns": {
-            "filename": "Filename",
-            "size": "Size",
-            "expectedHash": "Expected Hash",
-            "actualHash": "Actual Hash"
+            "filename": "Nombre del Archivo",
+            "size": "Tamaño",
+            "expectedHash": "Hash Esperado",
+            "actualHash": "Hash Actual"
         }
     },
     "files": {
-        "title": "Files",
+        "title": "Archivos",
         "columns": {
-            "filename": "Filename",
-            "size": "Size",
+            "filename": "Nombre del Archivo",
+            "size": "Tamaño",
             "hash": "Hash",
-            "status": "Status"
+            "status": "Estado"
         }
     },
     "status": {
-        "match": "Match",
-        "mismatch": "Mismatch",
-        "pending": "Pending",
-        "folder": "Folder",
-        "notStarted": "Not Started"
+        "match": "Coincide",
+        "mismatch": "No Coincide",
+        "pending": "Pendiente",
+        "folder": "Carpeta",
+        "notStarted": "No Iniciado"
     },
     "progress": {
-        "matched": "Matched",
-        "speed": "Speed",
+        "matched": "Coincidentes",
+        "speed": "Velocidad",
         "mbps": "MB/s"
     },
     "errors": {
-        "loadManifest": "Load manifest or SHA1 file first",
-        "noFiles": "No files selected",
-        "invalidFormat": "Invalid file format:",
-        "noValidHashes": "No valid SHA1 hashes found in file",
-        "fileMissing": "File Missing",
-        "loadingError": "Error loading file:",
-        "processingError": "Error processing file:"
+        "loadManifest": "Primero carga el manifiesto o archivo SHA1",
+        "noFiles": "No hay archivos seleccionados",
+        "invalidFormat": "Formato de archivo inválido:",
+        "noValidHashes": "No se encontraron hashes SHA1 válidos en el archivo",
+        "fileMissing": "Archivo Faltante",
+        "loadingError": "Error al cargar el archivo:",
+        "processingError": "Error al procesar el archivo:"
     },
     "ui": {
-        "loading": "Loading...",
-        "processing": "Processing...",
-        "folder": "Folder",
-        "close": "Close",
-        "cancel": "Cancel",
-        "confirm": "Confirm"
+        "loading": "Cargando...",
+        "processing": "Procesando...",
+        "folder": "Carpeta",
+        "close": "Cerrar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
     }
 }

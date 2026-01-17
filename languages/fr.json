@@ -2,14 +2,14 @@
     "app": {
         "title": "Steam Manifest/SHA-1 Contrôleur",
         "themes": {
-            "dark": "Dark Theme",
-            "blue": "Blue Theme",
-            "light": "Light Theme",
-            "steam": "Steam Theme",
-            "synthwave": "Synthwave Theme",
-            "ocean": "Ocean Theme",
-            "forest": "Forest Theme",
-            "solarized": "Solarized Theme"
+            "dark": "Thème Sombre",
+            "blue": "Thème Bleu",
+            "light": "Thème Clair",
+            "steam": "Thème Steam",
+            "synthwave": "Thème Synthwave",
+            "ocean": "Thème Océan",
+            "forest": "Thème Forêt",
+            "solarized": "Thème Solarisé"
         },
         "folderToggle": {
             "hide": "Masquer les Dossiers",
@@ -19,11 +19,11 @@
     "dropzones": {
         "manifest": "Déposez le manifeste Steam ou le fichier SHA-1 ici",
         "orInput": "Ou entrez les hashs SHA1 dans la zone de texte ci-dessous",
-        "textareaPlaceholder": "Hachures SHA1 ici",
+        "textareaPlaceholder": "Hashes SHA1 ici",
         "folder": "Déposer le dossier à vérifier ici"
     },
     "fileInfo": {
-        "title": "File Info",
+        "title": "Infos sur le Fichier",
         "type": "Type",
         "depotId": "Depot ID",
         "manifestId": "Manifest ID",
@@ -37,7 +37,7 @@
         }
     },
     "mismatches": {
-        "title": "Mismatched Files",
+        "title": "Fichiers Non Correspondants",
         "columns": {
             "filename": "Nom du Fichier",
             "size": "Taille",
@@ -59,7 +59,7 @@
         "mismatch": "Discordant",
         "pending": "En attente",
         "folder": "Dossier",
-        "notStarted": "Not Started"
+        "notStarted": "Non Démarré"
     },
     "progress": {
         "matched": "Correspondant",
@@ -68,7 +68,7 @@
     },
     "errors": {
         "loadManifest": "Charger le Steam Manifest ou le fichier SHA-1",
-        "noFiles": "Aucun fichiers sélectionnés",
+        "noFiles": "Aucun fichier sélectionné",
         "invalidFormat": "Format de fichier non valide:",
         "noValidHashes": "Aucun hachage SHA-1 valide n'a été trouvé dans le fichier",
         "fileMissing": "Fichier Manquant",
