@@ -85,6 +85,8 @@
         "close": "Close",
         "cancel": "Cancel",
         "confirm": "Confirm",
-        "downloadSha1": "Export SHA1"
+        "downloadSha1": "Export SHA1",
+        "exportCsv": "Export CSV",
+        "search": "Search files..."
     }
 }

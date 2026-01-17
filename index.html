@@ -538,6 +538,87 @@
             pointer-events: none;
             color: var(--text);
         }
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        th.sortable:hover {
+            background: var(--hover);
+        }
+        th.sortable::after {
+            content: "unfold_more";
+            font-family: "Material Icons";
+            font-size: 1rem;
+            margin-left: 0.25rem;
+            vertical-align: middle;
+            opacity: 0.5;
+        }
+        th.sortable.asc::after {
+            content: "expand_less";
+            opacity: 1;
+        }
+        th.sortable.desc::after {
+            content: "expand_more";
+            opacity: 1;
+        }
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        .search-input {
+            flex: 1;
+            max-width: 400px;
+            padding: 0.5rem 1rem;
+            background: var(--metallic);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .search-input::placeholder {
+            color: var(--text);
+            opacity: 0.5;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: var(--metallic);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stat-item .material-icons {
+            font-size: 1.25rem;
+        }
+        .stat-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .stat-label {
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        .keyboard-hint {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -676,14 +757,43 @@
                 <span class="material-icons">folder</span>
                 <span data-lang="files.title">Files</span>
             </h2>
+            <div id="stats-bar" class="stats-bar hidden">
+                <div class="stat-item match">
+                    <span class="material-icons">check_circle</span>
+                    <span class="stat-value" id="stat-matches">0</span>
+                    <span class="stat-label" data-lang="status.match">Match</span>
+                </div>
+                <div class="stat-item mismatch">
+                    <span class="material-icons">error</span>
+                    <span class="stat-value" id="stat-mismatches">0</span>
+                    <span class="stat-label" data-lang="status.mismatch">Mismatch</span>
+                </div>
+                <div class="stat-item pending">
+                    <span class="material-icons">pending</span>
+                    <span class="stat-value" id="stat-pending">0</span>
+                    <span class="stat-label" data-lang="status.pending">Pending</span>
+                </div>
+                <div class="stat-item folder">
+                    <span class="material-icons">folder</span>
+                    <span class="stat-value" id="stat-folders">0</span>
+                    <span class="stat-label" data-lang="status.folder">Folder</span>
+                </div>
+            </div>
+            <div class="search-container">
+                <input type="text" id="file-search" class="search-input" placeholder="Search files..." data-lang-placeholder="ui.search">
+                <button id="export-csv" class="toggle-button hidden">
+                    <span class="material-icons">table_chart</span>
+                    <span data-lang="ui.exportCsv">Export CSV</span>
+                </button>
+            </div>
             <div class="table-container">
-                <table>
+                <table id="files-table">
                     <thead>
                         <tr>
-                            <th style="width: 40%" data-lang="files.columns.filename">Filename</th>
-                            <th style="width: 10%" data-lang="files.columns.size">Size</th>
+                            <th style="width: 40%" class="sortable" data-sort="filename" data-lang="files.columns.filename">Filename</th>
+                            <th style="width: 10%" class="sortable" data-sort="size" data-lang="files.columns.size">Size</th>
                             <th style="width: 25%" data-lang="files.columns.hash">Hash</th>
-                            <th style="width: 25%" data-lang="files.columns.status">Status</th>
+                            <th style="width: 25%" class="sortable" data-sort="status" data-lang="files.columns.status">Status</th>
                         </tr>
                     </thead>
                     <tbody id="file-list"></tbody>
@@ -1008,6 +1118,8 @@
             fileMap: null,
             rowMap: null,
             stats: { matches: 0, mismatches: 0, folders: 0, total: 0 },
+            sortState: { column: null, direction: 'asc' },
+            searchTerm: '',
             buildFileMap() {
                 this.fileMap = new Map();
                 if (!window.currentManifest?.Files) return;
@@ -1202,6 +1314,96 @@
                     ${statusText}
                 `;
                 element.className = `status ${status}`;
+            },
+            sortTable(column) {
+                const fileList = document.getElementById('file-list');
+                const rows = Array.from(fileList.querySelectorAll('tr'));
+                if (this.sortState.column === column) {
+                    this.sortState.direction = this.sortState.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortState.column = column;
+                    this.sortState.direction = 'asc';
+                }
+                document.querySelectorAll('#files-table th.sortable').forEach(th => {
+                    th.classList.remove('asc', 'desc');
+                    if (th.dataset.sort === column) {
+                        th.classList.add(this.sortState.direction);
+                    }
+                });
+                const statusOrder = { match: 0, folder: 1, pending: 2, mismatch: 3 };
+                rows.sort((a, b) => {
+                    let aVal, bVal;
+                    if (column === 'filename') {
+                        aVal = a.children[0].textContent.toLowerCase();
+                        bVal = b.children[0].textContent.toLowerCase();
+                    } else if (column === 'size') {
+                        aVal = this.parseSizeToBytes(a.children[1].textContent);
+                        bVal = this.parseSizeToBytes(b.children[1].textContent);
+                    } else if (column === 'status') {
+                        const aStatus = a.querySelector('.status')?.classList[1] || 'pending';
+                        const bStatus = b.querySelector('.status')?.classList[1] || 'pending';
+                        aVal = statusOrder[aStatus] ?? 4;
+                        bVal = statusOrder[bStatus] ?? 4;
+                    }
+                    if (aVal < bVal) return this.sortState.direction === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return this.sortState.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+                rows.forEach(row => fileList.appendChild(row));
+            },
+            parseSizeToBytes(sizeStr) {
+                if (sizeStr === window.languageManager.getString('status.folder')) return -1;
+                const match = sizeStr.match(/([\d.]+)\s*(B|KB|MB|GB)/i);
+                if (!match) return 0;
+                const value = parseFloat(match[1]);
+                const unit = match[2].toUpperCase();
+                const multipliers = { B: 1, KB: 1024, MB: 1024 * 1024, GB: 1024 * 1024 * 1024 };
+                return value * (multipliers[unit] || 1);
+            },
+            filterFiles(searchTerm) {
+                this.searchTerm = searchTerm.toLowerCase();
+                const rows = document.querySelectorAll('#file-list tr');
+                rows.forEach(row => {
+                    const filename = row.children[0].textContent.toLowerCase();
+                    const hash = row.children[2].textContent.toLowerCase();
+                    const matches = filename.includes(this.searchTerm) || hash.includes(this.searchTerm);
+                    row.style.display = matches ? '' : 'none';
+                });
+            },
+            updateStatsBar() {
+                const statsBar = document.getElementById('stats-bar');
+                const pending = this.stats.total - this.stats.folders - this.stats.matches - this.stats.mismatches;
+                document.getElementById('stat-matches').textContent = this.stats.matches;
+                document.getElementById('stat-mismatches').textContent = this.stats.mismatches;
+                document.getElementById('stat-pending').textContent = Math.max(0, pending);
+                document.getElementById('stat-folders').textContent = this.stats.folders;
+                if (this.stats.matches > 0 || this.stats.mismatches > 0) {
+                    statsBar.classList.remove('hidden');
+                }
+            },
+            exportCSV() {
+                if (!window.currentManifest?.Files) return;
+                const rows = [['Filename', 'Size', 'Hash', 'Status']];
+                const fileList = document.querySelectorAll('#file-list tr');
+                fileList.forEach(row => {
+                    if (row.style.display === 'none') return;
+                    const filename = row.children[0].textContent;
+                    const size = row.children[1].textContent;
+                    const hash = row.children[2].textContent;
+                    const statusEl = row.querySelector('.status');
+                    const status = statusEl ? statusEl.textContent.trim() : '';
+                    rows.push([`"${filename.replace(/"/g, '""')}"`, size, hash, status]);
+                });
+                const csv = rows.map(r => r.join(',')).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const manifestName = window.currentManifest.isSHA1File ? 'export' :
+                    `${window.currentManifest.DepotID}_${window.currentManifest.ManifestGID}`;
+                a.download = `${manifestName}_files.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
             }
         };
         // Main Functions
@@ -1349,6 +1551,7 @@
                 }
             }
             utils.updateStatus(document.getElementById('completion-status'), statusType);
+            utils.updateStatsBar();
         }
         function displayManifest(manifest) {
             try {
@@ -1402,6 +1605,14 @@
                 document.getElementById('metadata').classList.remove('hidden');
                 document.getElementById('files').classList.remove('hidden');
                 document.getElementById('download-sha1').classList.remove('hidden');
+                document.getElementById('export-csv').classList.remove('hidden');
+                document.getElementById('stats-bar').classList.add('hidden');
+                document.getElementById('file-search').value = '';
+                utils.searchTerm = '';
+                utils.sortState = { column: null, direction: 'asc' };
+                document.querySelectorAll('#files-table th.sortable').forEach(th => {
+                    th.classList.remove('asc', 'desc');
+                });
                 utils.hideError();
             } catch (err) {
                 console.error('Error:', err);
@@ -1478,6 +1689,45 @@
                 folderToggleText.textContent = window.languageManager.getString(`app.folderToggle.${hideFolders ? 'show' : 'hide'}`);
                 if (window.currentManifest) {
                     displayManifest(window.currentManifest);
+                }
+            });
+            // Initialize sortable column headers
+            document.querySelectorAll('#files-table th.sortable').forEach(th => {
+                th.addEventListener('click', () => {
+                    utils.sortTable(th.dataset.sort);
+                });
+            });
+            // Initialize file search
+            const fileSearch = document.getElementById('file-search');
+            let searchTimeout;
+            fileSearch.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    utils.filterFiles(e.target.value);
+                }, 150);
+            });
+            // Initialize CSV export
+            document.getElementById('export-csv').addEventListener('click', () => {
+                utils.exportCSV();
+            });
+            // Initialize keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === 'f' || e.key === 'F') {
+                        e.preventDefault();
+                        fileSearch.focus();
+                    } else if (e.key === 'e' || e.key === 'E') {
+                        e.preventDefault();
+                        if (window.currentManifest) utils.exportCSV();
+                    } else if (e.key === 's' || e.key === 'S') {
+                        e.preventDefault();
+                        if (window.currentManifest) document.getElementById('download-sha1').click();
+                    }
+                } else if (e.key === 'Escape') {
+                    fileSearch.value = '';
+                    utils.filterFiles('');
+                    fileSearch.blur();
                 }
             });
             // Initialize drag and drop for both zones

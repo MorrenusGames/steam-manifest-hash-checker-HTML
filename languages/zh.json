@@ -85,6 +85,8 @@
         "close": "关闭",
         "cancel": "取消",
         "confirm": "确认",
-        "downloadSha1": "导出 SHA1"
+        "downloadSha1": "导出 SHA1",
+        "exportCsv": "导出 CSV",
+        "search": "搜索文件..."
     }
 }

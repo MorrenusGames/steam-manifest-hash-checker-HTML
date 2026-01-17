@@ -85,6 +85,8 @@
         "close": "閉じる",
         "cancel": "キャンセル",
         "confirm": "確認",
-        "downloadSha1": "SHA1をエクスポート"
+        "downloadSha1": "SHA1をエクスポート",
+        "exportCsv": "CSVをエクスポート",
+        "search": "ファイルを検索..."
     }
 }
