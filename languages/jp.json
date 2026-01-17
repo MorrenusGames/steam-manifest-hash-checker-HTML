@@ -20,7 +20,10 @@
         "manifest": "Steam ManifestまたはSHA-1ファイルをここにドロップ",
         "orInput": "または、以下のテキストエリアにSHA1ハッシュを入力してください",
         "textareaPlaceholder": "SHA1ハッシュはこちら",
-        "folder": "検証のためにフォルダをここにドラッグ＆ドロップ"
+        "folder": "検証のためにフォルダをここにドラッグ＆ドロップ",
+        "fileMode": "ファイル",
+        "textMode": "テキスト",
+        "textInput": "SHA1ハッシュを入力"
     },
     "fileInfo": {
         "title": "ファイル情報",

@@ -20,7 +20,10 @@
         "manifest": "Arrastra el manifiesto de Steam o archivo SHA1 aquí",
         "orInput": "O ingresa los hashes SHA1 en el área de texto a continuación",
         "textareaPlaceholder": "Hashes SHA1 aquí",
-        "folder": "Arrastra la carpeta a verificar aquí"
+        "folder": "Arrastra la carpeta a verificar aquí",
+        "fileMode": "Archivo",
+        "textMode": "Texto",
+        "textInput": "Ingresa los hashes SHA1 abajo"
     },
     "fileInfo": {
         "title": "Información del Archivo",

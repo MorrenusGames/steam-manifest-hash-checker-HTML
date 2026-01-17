@@ -20,7 +20,10 @@
         "manifest": "Перетащите Steam манифест или SHA1 файл сюда",
         "folder": "Перетащите папку для проверки сюда",
         "orInput": "Или введите хэши SHA1 в текстовое поле ниже",
-        "textareaPlaceholder": "Хэши SHA1 здесь"
+        "textareaPlaceholder": "Хэши SHA1 здесь",
+        "fileMode": "Файл",
+        "textMode": "Текст",
+        "textInput": "Введите хэши SHA1 ниже"
     },
     "fileInfo": {
         "title": "Информация о файле",

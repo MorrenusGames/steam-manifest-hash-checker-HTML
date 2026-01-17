@@ -20,7 +20,10 @@
         "manifest": "Drop Steam manifest or SHA1 file here",
         "orInput": "Or enter SHA1 hashes into the textarea below",
         "textareaPlaceholder": "SHA1 hashes here",
-        "folder": "Drop folder to verify here"
+        "folder": "Drop folder to verify here",
+        "fileMode": "File",
+        "textMode": "Text",
+        "textInput": "Enter SHA1 hashes below"
     },
     "fileInfo": {
         "title": "File Info",

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFix bugs and security vulnerabilities\n\n- Fix markPendingAsMissing using wrong parent element\n- Fix size check causing false mismatches when TotalSize is 0\n- Add XSS protection with escapeHtml for user-provided content\n- Remove unused isNonEmptyFolder function and loadingPromise property\n- Fix hardcoded CSS color to use theme variable\n- Remove unused chunkSize variable and fix missing semicolons\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(dir \"C:\\\\Users\\\\Morrenus\\\\Desktop\\\\Philna Fantasy \\(2591150\\)\\\\Philna Fantasy\\\\MonoBleedingEdge\\\\etc\\\\mono\")",
+      "Bash(dir \"C:\\\\Users\\\\Morrenus\\\\Desktop\\\\Philna Fantasy \\(2591150\\)\\\\Philna Fantasy\\\\MonoBleedingEdge\\\\etc\\\\mono\\\\4.0\")",
+      "Bash(dir:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

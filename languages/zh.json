@@ -20,7 +20,10 @@
         "manifest": "拖拽 Steam manifest 或 SHA1 文件至此",
         "orInput": "或在下方的文本框中输入 SHA1 文件内容",
         "textareaPlaceholder": "在此输入 SHA1 文件内容",
-        "folder": "拖拽文件夹至此以开始校验"
+        "folder": "拖拽文件夹至此以开始校验",
+        "fileMode": "文件",
+        "textMode": "文本",
+        "textInput": "在下方输入 SHA1 哈希值"
     },
     "fileInfo": {
         "title": "文件信息",

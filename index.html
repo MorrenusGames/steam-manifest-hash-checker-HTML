@@ -462,6 +462,72 @@
             background: var(--metallic-hover);
             border-color: var(--primary);
         }
+        .input-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            z-index: 2;
+            position: relative;
+        }
+        .toggle-label {
+            font-size: 0.85rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--border);
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: var(--text);
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .switch input:checked + .slider {
+            background: var(--primary);
+        }
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        .input-mode {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+        .input-mode.hidden {
+            display: none;
+        }
+        #text-mode textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+        }
         .language-selector::after {
             content: "language";
             font-family: "Material Icons";
@@ -521,11 +587,24 @@
     <div class="container">
         <div class="dropzones">
             <div class="dropzone" id="drop-zone">
-                <span class="material-icons">upload_file</span>
-                <span data-lang="dropzones.manifest">Drop Steam manifest or SHA1 file here</span>
-                <input type="file" id="file-input">
-                <span data-lang="dropzones.orInput">Or enter SHA1 hashes into the textarea below</span>
-                <textarea id="raw-input" placeholder="SHA1 hashes here" data-lang-placeholder="dropzones.textareaPlaceholder"></textarea>
+                <div class="input-toggle">
+                    <span class="toggle-label" data-lang="dropzones.fileMode">File</span>
+                    <label class="switch">
+                        <input type="checkbox" id="input-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label" data-lang="dropzones.textMode">Text</span>
+                </div>
+                <div id="file-mode" class="input-mode">
+                    <span class="material-icons">upload_file</span>
+                    <span data-lang="dropzones.manifest">Drop Steam manifest or SHA1 file here</span>
+                    <input type="file" id="file-input">
+                </div>
+                <div id="text-mode" class="input-mode hidden">
+                    <span class="material-icons">edit_note</span>
+                    <span data-lang="dropzones.textInput">Enter SHA1 hashes below</span>
+                    <textarea id="raw-input" placeholder="SHA1 hashes here" data-lang-placeholder="dropzones.textareaPlaceholder"></textarea>
+                </div>
             </div>
             <div class="dropzone" id="dir-zone">
                 <span class="material-icons">folder_open</span>
@@ -660,7 +739,10 @@
                     "errors.noValidHashes": "No valid SHA1 hashes found in file",
                     "errors.fileMissing": "File Missing",
                     "ui.loading": "Loading...",
-                    "ui.downloadSha1": "Export SHA1"
+                    "ui.downloadSha1": "Export SHA1",
+                    "dropzones.fileMode": "File",
+                    "dropzones.textMode": "Text",
+                    "dropzones.textInput": "Enter SHA1 hashes below"
                 };
             }
             // Initialize the language manager
@@ -1347,6 +1429,19 @@
             });
             document.getElementById('dir-input').addEventListener('change', (e) => {
                 if (e.target.files.length) handleDirectory(Array.from(e.target.files));
+            });
+            // Input mode toggle
+            const inputModeToggle = document.getElementById('input-mode-toggle');
+            const fileMode = document.getElementById('file-mode');
+            const textMode = document.getElementById('text-mode');
+            inputModeToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    fileMode.classList.add('hidden');
+                    textMode.classList.remove('hidden');
+                } else {
+                    fileMode.classList.remove('hidden');
+                    textMode.classList.add('hidden');
+                }
             });
             // Raw input handler
             document.getElementById('raw-input').addEventListener('change', (e) => {

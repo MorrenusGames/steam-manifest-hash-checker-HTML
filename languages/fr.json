@@ -20,7 +20,10 @@
         "manifest": "Déposez le manifeste Steam ou le fichier SHA-1 ici",
         "orInput": "Ou entrez les hashs SHA1 dans la zone de texte ci-dessous",
         "textareaPlaceholder": "Hashes SHA1 ici",
-        "folder": "Déposer le dossier à vérifier ici"
+        "folder": "Déposer le dossier à vérifier ici",
+        "fileMode": "Fichier",
+        "textMode": "Texte",
+        "textInput": "Entrez les hashes SHA1 ci-dessous"
     },
     "fileInfo": {
         "title": "Infos sur le Fichier",

@@ -20,7 +20,10 @@
         "manifest": "Steam-Manifest oder SHA1-Datei hier ablegen",
         "orInput": "Oder geben Sie SHA1-Hashes in das folgende Textfeld ein",
         "textareaPlaceholder": "SHA1-Hashes hier",
-        "folder": "Ordner zum Verifizieren hier ablegen"
+        "folder": "Ordner zum Verifizieren hier ablegen",
+        "fileMode": "Datei",
+        "textMode": "Text",
+        "textInput": "SHA1-Hashes unten eingeben"
     },
     "fileInfo": {
         "title": "Datei-Info",
