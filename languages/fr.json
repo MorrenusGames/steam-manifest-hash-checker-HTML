@@ -81,6 +81,7 @@
         "folder": "Dossier",
         "close": "Fermer",
         "cancel": "Annuler",
-        "confirm": "Confirmer"
+        "confirm": "Confirmer",
+        "downloadSha1": "Exporter SHA1"
     }
 }

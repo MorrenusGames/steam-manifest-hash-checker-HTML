@@ -81,6 +81,7 @@
         "folder": "Carpeta",
         "close": "Cerrar",
         "cancel": "Cancelar",
-        "confirm": "Confirmar"
+        "confirm": "Confirmar",
+        "downloadSha1": "Exportar SHA1"
     }
 }

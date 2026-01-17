@@ -81,6 +81,7 @@
         "folder": "文件夹",
         "close": "关闭",
         "cancel": "取消",
-        "confirm": "确认"
+        "confirm": "确认",
+        "downloadSha1": "导出 SHA1"
     }
 }

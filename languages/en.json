@@ -81,6 +81,7 @@
         "folder": "Folder",
         "close": "Close",
         "cancel": "Cancel",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "downloadSha1": "Export SHA1"
     }
 }

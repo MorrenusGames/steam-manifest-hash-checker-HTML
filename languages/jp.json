@@ -81,6 +81,7 @@
         "folder": "フォルダ",
         "close": "閉じる",
         "cancel": "キャンセル",
-        "confirm": "確認"
+        "confirm": "確認",
+        "downloadSha1": "SHA1をエクスポート"
     }
 }

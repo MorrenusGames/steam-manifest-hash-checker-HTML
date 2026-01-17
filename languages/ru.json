@@ -1,6 +1,6 @@
 {
     "app": {
-        "title": "Проверка манифестов Steam/SHA1",
+        "title": "Steam Manifest/SHA1 чекер",
         "themes": {
             "dark": "Темная тема",
             "blue": "Синяя тема",
@@ -17,14 +17,15 @@
         }
     },
     "dropzones": {
-        "manifest": "Перетащите манифест Steam или файл SHA1 сюда",
+        "manifest": "Перетащите Steam манифест или SHA1 файл сюда",
         "folder": "Перетащите папку для проверки сюда",
-        "orInput": "Или введите хэши SHA1 в текстовое поле ниже"
+        "orInput": "Или введите хэши SHA1 в текстовое поле ниже",
+        "textareaPlaceholder": "Хэши SHA1 здесь"
     },
     "fileInfo": {
         "title": "Информация о файле",
         "type": "Тип",
-        "depotId": "ID депо (Depot ID)",
+        "depotId": "ID депота (Depot ID)",
         "manifestId": "ID манифеста",
         "creationDate": "Дата создания",
         "totalFiles": "Всего файлов",
@@ -66,7 +67,7 @@
         "mbps": "МБ/с"
     },
     "errors": {
-        "loadManifest": "Сначала загрузите манифест или файл SHA1",
+        "loadManifest": "Сначала загрузите манифест или SHA1 файл",
         "noFiles": "Файлы не выбраны",
         "invalidFormat": "Неверный формат файла:",
         "noValidHashes": "В файле не найдено допустимых хэшей SHA1",
@@ -80,6 +81,7 @@
         "folder": "Папка",
         "close": "Закрыть",
         "cancel": "Отмена",
-        "confirm": "Подтвердить"
+        "confirm": "Подтвердить",
+        "downloadSha1": "Экспорт SHA1"
     }
 }
