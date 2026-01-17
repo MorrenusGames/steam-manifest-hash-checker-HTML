@@ -350,7 +350,7 @@
             overflow-x: auto;
             border: 1px solid var(--border);
             border-radius: 8px;
-            background: rgba(42, 50, 66, 0.5);
+            background: var(--hover);
         }
         table {
             width: 100%;
@@ -640,7 +640,6 @@
                     this.currentLanguage = navigator.languages.map(l => l.substring(0, 2)).find(l => supportedLanguages.includes(l)) || 'en';
                 }
                 this.strings = null;
-                this.loadingPromise = null;
                 this.fallbackStrings = {
                     // Default English strings in case language files can't be loaded
                     "app.title": "Steam Manifest/SHA1 Checker",
@@ -898,16 +897,21 @@
             createMismatchRow(fileName, fileSize, expectedHash, actualHash) {
                 const mismatchRow = document.createElement('tr');
                 mismatchRow.innerHTML = `
-                    <td>${fileName}</td>
-                    <td>${fileSize}</td>
-                    <td class="file-hash">${expectedHash}</td>
-                    <td class="file-hash">${actualHash}</td>
+                    <td>${utils.escapeHtml(fileName)}</td>
+                    <td>${utils.escapeHtml(fileSize)}</td>
+                    <td class="file-hash">${utils.escapeHtml(expectedHash)}</td>
+                    <td class="file-hash">${utils.escapeHtml(actualHash)}</td>
                 `;
                 return mismatchRow;
             }
         };
         // General Utility Functions
         const utils = {
+            escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            },
             formatSize(bytes) {
                 const units = ['B', 'KB', 'MB', 'GB'];
                 let value = Number(bytes);
@@ -937,10 +941,6 @@
                 return typeof hash === 'string' ?
                     hash === '0000000000000000000000000000000000000000' :
                     this.formatHash(hash) === '0000000000000000000000000000000000000000';
-            },
-            isNonEmptyFolder(file, allFiles) {
-                if (!this.isFolder(file.FileHash)) return false;
-                return allFiles.some(f => f.FileName.startsWith(file.FileName + '/'));
             },
             normalizePath(path) {
                 path = path.replace(/\\/g, '/');
@@ -1051,14 +1051,14 @@
                     DepotID: 'SHA1 File',
                     ManifestGID: 'N/A',
                     CreationTime: new Date(),
-                    TotalSize: files.some(e => e.TotalSize > 0) ? files.reduce((a, c) => a.TotalSize + c.TotalSize) : 0,
+                    TotalSize: files.some(e => e.TotalSize > 0) ? files.reduce((a, c) => a + c.TotalSize, 0) : 0,
                     isSHA1File: true
                 };
             },
             markPendingAsMissing() {
                 document.querySelectorAll('#file-list tr .status.pending').forEach(status => {
                     utils.updateStatus(status, 'mismatch');
-                    const row = status.parentElement;
+                    const row = status.closest('tr');
                     const fileName = row.children[0].textContent;
                     const fileSize = row.children[1].textContent;
                     const expectedHash = row.children[2].textContent;
@@ -1079,7 +1079,7 @@
                 const error = document.getElementById('error');
                 error.innerHTML = `
                     <span class="material-icons">error</span>
-                    <span class="error-message">${message}</span>
+                    <span class="error-message">${this.escapeHtml(message)}</span>
                 `;
                 error.classList.remove('hidden');
                 document.getElementById('metadata').classList.add('hidden');
@@ -1115,7 +1115,6 @@
             utils.hideError();
             const progress = ProgressManager.create();
             const sha1 = await hashwasm.createSHA1();
-            const chunkSize = 8 * 1024 * 1024;
             let processedBytes = 0;
             let startTime = Date.now();
             try {
@@ -1199,8 +1198,8 @@
                 utils.formatHash(manifestFile.FileHash);
             const actualHash = typeof hash === 'string' ? hash : utils.formatHash(hash);
             const matchStatus = (() => {
-                // Check file size
-                if (manifestFile.TotalSize !== fileSize) {
+                // Check file size (only if manifest has size info)
+                if (manifestFile.TotalSize > 0 && manifestFile.TotalSize !== fileSize) {
                     return 'mismatch';
                 }
                 // Check SHA1
@@ -1268,10 +1267,12 @@
                 filteredFiles.forEach(file => {
                     const row = document.createElement('tr');
                     const isFolder = utils.isFolder(file.FileHash);
+                    const escapedFileName = utils.escapeHtml(file.FileName);
+                    const escapedHash = utils.escapeHtml(manifest.isSHA1File ? file.FileHash : utils.formatHash(file.FileHash));
                     row.innerHTML = `
-                        <td>${file.FileName}</td>
+                        <td>${escapedFileName}</td>
                         <td>${isFolder ? window.languageManager.getString('status.folder') : utils.formatSize(file.TotalSize)}</td>
-                        <td class="file-hash">${isFolder ? window.languageManager.getString('status.folder') : (manifest.isSHA1File ? file.FileHash : utils.formatHash(file.FileHash))}</td>
+                        <td class="file-hash">${isFolder ? window.languageManager.getString('status.folder') : escapedHash}</td>
                         <td class="status ${isFolder ? 'folder' : 'pending'}">
                             <span class="material-icons">${isFolder ? 'folder' : 'pending'}</span>
                             ${isFolder ? window.languageManager.getString('status.folder') : window.languageManager.getString('status.pending')}
@@ -1298,7 +1299,7 @@
             const savedTheme = localStorage.getItem('theme') || 'steam';
             for (const option of themeSelect.options) {
                 option.setAttribute('data-lang', `app.themes.${option.value}`);
-            };
+            }
             document.documentElement.setAttribute('data-theme', savedTheme);
             themeSelect.value = savedTheme;
             themeSelect.addEventListener('change', (e) => {
@@ -1318,7 +1319,7 @@
             // Raw input handler
             document.getElementById('raw-input').addEventListener('change', (e) => {
                 if (typeof e.target.value === 'string' && e.target.value !== '') handleManifestFile(e.target.value);
-            })
+            });
             // Initialize folder toggle
             const folderToggle = document.getElementById('folder-toggle');
             const folderToggleText = document.getElementById('folder-toggle-text');
@@ -1359,7 +1360,7 @@
                                 return new Promise((resolve) => {
                                     entry.file(file => {
                                         const pathParts = entry.fullPath.split('/');
-                                        file.relativePath = ("/" + pathParts.slice(2).join('/')) 
+                                        file.relativePath = "/" + pathParts.slice(2).join('/');
                                         files.push(file);
                                         resolve();
                                     }, (err) => {
